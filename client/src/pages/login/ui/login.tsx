@@ -1,7 +1,7 @@
 import { Button, Description, Field, Input, Label } from "@headlessui/react";
 import { NavLink } from "react-router";
 
-export function AuthPage() {
+export function LoginPage() {
 
 
   return (

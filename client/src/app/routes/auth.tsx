@@ -1,4 +1,4 @@
-import { AuthPage } from "~/pages/auth";
+import { LoginPage } from "~/pages/login";
 import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
@@ -9,5 +9,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Auth() {
-  return <AuthPage />;
+  return <LoginPage />;
 }
