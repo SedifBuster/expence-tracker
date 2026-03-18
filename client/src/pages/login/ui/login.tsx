@@ -1,5 +1,4 @@
 import { Button, Description, Field, Input, Label } from "@headlessui/react";
-import { NavLink } from "react-router";
 
 export function LoginPage() {
 
@@ -16,6 +15,7 @@ export function LoginPage() {
           тут библиотеку на авто + через гугл и тд + форм хук
            + оптимистик мб также два таба рег \ авто
         </p>
+      
         <Field>
         <Label className="text-sm/6 font-medium text-white">Login</Label>
         <Description className="text-sm/6 text-white/50"></Description>
