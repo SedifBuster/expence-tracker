@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useAuthStore } from "~/features/auth/model/store"
+import { useAuthStore } from "~/features/auth"
 import { supabase } from "~/shared/lib/supabase"
 
 

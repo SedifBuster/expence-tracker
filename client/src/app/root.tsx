@@ -10,6 +10,7 @@ import {
 import "./app.css";
 import type { Route } from "./+types/root";
 import { Header } from "~/widgets/header";
+import { SupabaseProvider } from "./providers/supabaseProvider";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,10 +22,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Header />
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <SupabaseProvider >
+          <Header />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </SupabaseProvider>
       </body>
     </html>
   );

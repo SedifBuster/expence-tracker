@@ -29,9 +29,6 @@ export function Header ()  {
         <NavLink to={"/"} className={"p-2 text-2xl font-semibold"}>
          <h1>Expense tracker</h1>
         </NavLink>
-        <NavLink to={"/dashboard"}>
-         <h2>dash</h2>
-        </NavLink>
         {/* Right-side: Search & User Actions */}
         <div className="flex items-center space-x-4">
           {/* User Menu */}
@@ -60,6 +57,9 @@ export function Header ()  {
         >
           Sign in 👤
         </Button>
+        </NavLink>
+                <NavLink to={"/dashboard"}>
+         <h2>dash</h2>
         </NavLink>
           </div>
         </div>
