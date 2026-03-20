@@ -12,7 +12,7 @@ interface AuthState {
 
 interface AuthActions {
   signIn: (email: string, passwor: string) => Promise<void>
-  signUp: (email: string, password: string, userData: any) => Promise<void>
+  signUp: (email: string, password: string, userData?: any) => Promise<void>
   signOut: () => void
   resetPassword: (email: string) => Promise<void>
   updatePassword: (newPassword: string) => Promise<void>
@@ -46,6 +46,7 @@ export const useAuthStore = create<AuthStore>()(
             session: data.session,
             isLoading: false
           })
+          localStorage.setItem('auth-token', data.session?.access_token || '')
         } catch (error) {
           set({
             error: error instanceof Error ? error.message : 'Sign in failed',

@@ -5,7 +5,7 @@ export function LoginPage() {
   return (
   <main className="flex items-center justify-center pt-16 pb-4">
     <div className="flex w-full justify-center px-4 pt-12">
-      <div className="w-full max-w-xl">
+      <div className="w-full max-w-lg">
         <TabGroup>
           <TabList className="flex gap-4">
             <Tab 

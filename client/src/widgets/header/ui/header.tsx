@@ -1,6 +1,7 @@
 import { Button } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import { useAuthStore } from "~/features/auth";
 
 interface HeaderProps {
   logo?: React.ReactNode;
@@ -11,6 +12,10 @@ interface HeaderProps {
 
 export function Header ()  {
   const [isScrolled, setIsScrolled] = useState(false);
+  const {
+    signOut
+  } = useAuthStore()
+    const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +24,16 @@ export function Header ()  {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSignOut = async () => {
+    try{
+      signOut()
+      navigate('/')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+
+  }
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -61,6 +76,9 @@ export function Header ()  {
                 <NavLink to={"/dashboard"}>
          <h2>dash</h2>
         </NavLink>
+        <Button onClick={() => handleSignOut()}>
+         <h2>SignOut</h2>
+        </Button>
           </div>
         </div>
       </div>

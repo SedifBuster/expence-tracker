@@ -1,112 +1,219 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuthStore } from "../model/store";
-import { Button, Input } from "@headlessui/react";
-
+import { useAuthStore, useIsAuthenticated } from "../model/store";
+import {
+  Button,
+  Field,
+  Fieldset,
+  Input,
+  Label,
+  Legend,
+} from "@headlessui/react";
+import clsx from "clsx";
 
 export function LoginForm () {
-  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { signIn, isLoading, error, clearError } = useAuthStore()
+  const {
+    isLoading,
+    error,
+    signIn,
+    clearError
+  } = useAuthStore()
+  const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     clearError();
-
     try {
       await signIn(email, password)
-      navigate('/dashboard')
-    } catch {}
+    } catch (error) {
+      console.log('Login failed, error in store')
+    }
   }
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        disabled={isLoading}
-      />
-      
-      <Input
-        type="password"
-        placeholder="Пароль"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        disabled={isLoading}
-      />
-      
-      {error && (
-        <div className="text-red-500 text-sm bg-red-50 p-3 rounded">
-          {error}
-        </div>
-      )}
-      
-      <Button 
-        type="submit" 
-        disabled={isLoading}
-        className="w-full"
-      >
-        {isLoading ? 'Sign In...' : 'Sign In'}
-      </Button>
-    </form>
-  )
-}
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard')
+    }
+  }, [isAuthenticated])
 
-//TODO: add clsx add remote sign in?
-/**
- *  <div className="w-full max-w-lg px-4">
-      <Fieldset className="space-y-6 rounded-xl bg-white/5 p-6 sm:p-10">
-        <Legend className="text-base/7 font-semibold text-white">Shipping details</Legend>
+  return (
+    <form
+      onSubmit={(e) => {e.preventDefault(); handleSubmit()}}
+    >
+      <Fieldset className="space-y-6 sm:p-10">
+        <Legend
+          className="
+            text-xl
+            font-semibold
+            text-white
+          "
+        >For convenience only &#129303;</Legend>
         <Field>
-          <Label className="text-sm/6 font-medium text-white">Street address</Label>
+          <Label
+            className="
+              text-sm/6
+              font-medium
+              text-white
+          ">
+            Email
+          </Label>
           <Input
+            value={email}
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={isLoading}
+            className={clsx(
+            'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
+            'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
+            )}
+          />
+        </Field>
+        <Field>
+          <Label
+            className="
+              text-sm/6
+              font-medium
+              text-white"
+          >Password</Label>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={isLoading}
             className={clsx(
               'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
               'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
             )}
           />
         </Field>
-        <Field>
-          <Label className="text-sm/6 font-medium text-white">Country</Label>
-          <Description className="text-sm/6 text-white/50">We currently only ship to North America.</Description>
-          <div className="relative">
-            <Select
-              className={clsx(
-                'mt-3 block w-full appearance-none rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
-                'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
-                // Make the text of each option black on Windows
-                '*:text-black'
-              )}
-            >
-              <option>Canada</option>
-              <option>Mexico</option>
-              <option>United States</option>
-            </Select>
-            <ChevronDownIcon
-              className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-white/60"
-              aria-hidden="true"
-            />
+
+        {error && (
+          <div className="text-red-500 text-sm bg-red-50 p-3 rounded">
+            {error}
           </div>
-        </Field>
-        <Field>
-          <Label className="text-sm/6 font-medium text-white">Delivery notes</Label>
-          <Description className="text-sm/6 text-white/50">
-            If you have a tiger, we'd like to know about it.
-          </Description>
-          <Textarea
-            className={clsx(
-              'mt-3 block w-full resize-none rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
-              'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
-            )}
-            rows={3}
-          />
-        </Field>
+        )}
+
+        <Button 
+          type="submit" 
+          disabled={isLoading}
+          className="
+            w-full
+            inline-flex
+            items-center
+            rounded-md
+            bg-green-900
+            px-3
+            py-1.5
+            text-sm/6
+            font-semibold
+            text-white
+            shadow-inner
+            shadow-white/10
+            focus:not-data-focus:outline-none
+            data-focus:outline
+            data-focus:outline-white
+            data-hover:bg-green-800
+            data-open:bg-green-700
+            cursor-pointer
+            justify-center
+          "
+        >
+        {isLoading ? 'Sign In...' : 'Sign In'}
+      </Button>
+
+
+
+      <Button 
+         
+        disabled={isLoading}
+        className="
+        w-full
+            inline-flex
+            items-center
+            rounded-md
+            bg-gray-700
+            px-3
+            py-1.5
+            text-sm/6
+            font-semibold
+            text-white
+            shadow-inner
+            shadow-white/10
+            focus:not-data-focus:outline-none
+            data-focus:outline
+            data-focus:outline-white
+            data-hover:bg-gray-600
+            data-open:bg-gray-700
+            cursor-pointer
+          "
+      >
+        GOOGLE
+      </Button>
+
+      <Button 
+         
+        disabled={isLoading}
+        className="
+        w-full
+            inline-flex
+            items-center
+            rounded-md
+            bg-gray-700
+            px-3
+            py-1.5
+            text-sm/6
+            font-semibold
+            text-white
+            shadow-inner
+            shadow-white/10
+            focus:not-data-focus:outline-none
+            data-focus:outline
+            data-focus:outline-white
+            data-hover:bg-gray-600
+            data-open:bg-gray-700
+            cursor-pointer
+          "
+      >
+        GITHUB
+      </Button>
       </Fieldset>
-    </div>
+    </form>
+  )
+}
+
+//TODO: add remote sign in? regex 
+/**
+ * 
+ * Базовый вариант (рекомендуется для большинства случаев)
+regex
+^[^\s@]+@([^\s@]+\.)+[^\s@]+$
+Что проверяет:
+
+Не содержит пробелов
+
+Имеет формат something@domain.zone
+
+Допускает точки в локальной части (например, ivan.ivanov@mail.ru)
+
+
+Стандартный вариант (8+ символов, буквы + цифры)
+regex
+^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$
+Что требует:
+
+Минимум 8 символов
+
+Хотя бы одна буква
+
+Хотя бы одна цифра
+
+Только латиница и цифры
+
+
+ * 
  */
