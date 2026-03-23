@@ -1,7 +1,18 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { LoginForm, RegisterForm } from "~/features/auth";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { LoginForm, RegisterForm, useIsAuthenticated } from "~/features/auth";
 
 export function LoginPage() {
+  const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard')
+    }
+  },[isAuthenticated, navigate])
+
   return (
   <main className="flex items-center justify-center pt-16 pb-4">
     <div className="flex w-full justify-center px-4 pt-12">

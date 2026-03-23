@@ -1,29 +1,61 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "../model/store";
 import { Button, Description, Field, Fieldset, Input, Label, Legend } from "@headlessui/react";
+import { validateEmail, validatePasswordForSignup } from "~/shared/lib/validation";
 import clsx from "clsx";
+import { validateNameForSignup } from "~/shared/lib/validation/validation";
 
 export function RegisterForm () {
-  const navigate = useNavigate()
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [validationErrors, setValidationErrors] = useState<{
+    name?: string
+    email?: string
+    password?: string
+  }>({})
 
   const { signUp, isLoading, error, clearError } = useAuthStore()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const validateForm = () => {
+    const errors: typeof validationErrors = {}
+
+    const nameError = validateNameForSignup(name)
+    if(nameError) errors.name = nameError
+
+    const emailError = validateEmail(email)
+    if(emailError) errors.email = emailError
+  
+    const passwordError = validatePasswordForSignup(password)
+    if(passwordError) errors.password = passwordError
+  
+    setValidationErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
+  const handleSubmit = async () => {
+    setValidationErrors({})
     clearError();
 
+    if(!validateForm()) {
+      console.log('Validation error')
+      return
+    }
+
     try {
-      await signUp(email, password)
-      navigate('/dashboard')
-    } catch {}
+      await signUp(email, password, name)
+    } catch (error) {
+      console.log('Register failed, error in store', error)
+    }
   }
 
   return (
- <form onSubmit={handleSubmit} className="space-y-4">
-       <Fieldset className="space-y-6 rounded-xl bg-white/5 p-6 sm:p-10">
+    <form 
+      onSubmit={(e) => { e.preventDefault(); handleSubmit()}}
+      className="space-y-4"
+    >
+       <Fieldset className="space-y-6 rounded-xl  p-6 sm:p-10">
         <Legend className="text-base/7 font-semibold text-white">To create a convenient account just for you</Legend>
         <Field>
         <Label className="text-sm/6 font-medium text-white">Name</Label>
@@ -86,7 +118,7 @@ export function RegisterForm () {
             inline-flex
             items-center
             rounded-md
-            bg-gray-700
+            bg-green-900
             px-3
             py-1.5
             text-sm/6
@@ -97,9 +129,10 @@ export function RegisterForm () {
             focus:not-data-focus:outline-none
             data-focus:outline
             data-focus:outline-white
-            data-hover:bg-gray-600
-            data-open:bg-gray-700
+            data-hover:bg-green-800
+            data-open:bg-green-700
             cursor-pointer
+            justify-center
           "
       >
         {isLoading ? 'Sign Up...' : 'Sign Up'}

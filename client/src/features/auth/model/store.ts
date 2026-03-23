@@ -12,6 +12,7 @@ interface AuthState {
 
 interface AuthActions {
   signIn: (email: string, passwor: string) => Promise<void>
+  signInWithProvider: (provider: 'google' | 'github') => Promise<{error?: string}>
   signUp: (email: string, password: string, userData?: any) => Promise<void>
   signOut: () => void
   resetPassword: (email: string) => Promise<void>
@@ -52,6 +53,32 @@ export const useAuthStore = create<AuthStore>()(
             error: error instanceof Error ? error.message : 'Sign in failed',
             isLoading: false
           })
+        }
+      },
+
+      signInWithProvider: async (provider: 'google' | 'github') => {
+        set({ isLoading: true, error: null });
+
+        try {
+        // Определяем URL для редиректа после авторизации
+        const redirectTo = `${window.location.origin}/auth/callback`;
+      
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: {
+            redirectTo,
+          },
+        });
+      
+        if (error) throw error;
+      
+        // Важно! signInWithOAuth не возвращает сразу сессию,
+        // она появится после редиректа обратно в приложение
+          set({ isLoading: false });
+          return {};
+        } catch (error: any) {
+          set({ error: error.message, isLoading: false });
+          return { error: error.message };
         }
       },
 
