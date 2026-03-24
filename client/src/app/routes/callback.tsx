@@ -31,7 +31,7 @@ export function AuthCallback() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-900 mx-auto"></div>
-        <p className="mt-4 text-gray-300">Завершаем вход...</p>
+        <p className="mt-4 text-gray-300">We are completing the login...</p>
       </div>
     </div>
   );

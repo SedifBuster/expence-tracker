@@ -90,12 +90,14 @@ export const useAuthStore = create<AuthStore>()(
             email,
             password,
             options: {
-              data: userData
+              data: {
+                fullName: userData
+              },
             },
           })
 
           if (error) throw error
-
+//TODO: profiles doesnt exist
           if(data.user) {
             await supabase.from('profiles').insert([
               {

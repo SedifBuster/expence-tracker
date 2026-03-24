@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import { useAuthStore } from "../model/store";
 import { Button, Description, Field, Fieldset, Input, Label, Legend } from "@headlessui/react";
 import { validateEmail, validatePasswordForSignup } from "~/shared/lib/validation";
@@ -35,8 +34,8 @@ export function RegisterForm () {
   }
 
   const handleSubmit = async () => {
-    setValidationErrors({})
     clearError();
+    setValidationErrors({})
 
     if(!validateForm()) {
       console.log('Validation error')
@@ -52,68 +51,104 @@ export function RegisterForm () {
 
   return (
     <form 
-      onSubmit={(e) => { e.preventDefault(); handleSubmit()}}
+      onSubmit={(e) => {e.preventDefault(); handleSubmit()}}
       className="space-y-4"
     >
-       <Fieldset className="space-y-6 rounded-xl  p-6 sm:p-10">
-        <Legend className="text-base/7 font-semibold text-white">To create a convenient account just for you</Legend>
+      <Fieldset className="space-y-6 rounded-xl p-6 sm:p-10">
+        <Legend className="
+            text-xl
+            font-semibold
+            text-white">To remember your details
+        </Legend>
         <Field>
-        <Label className="text-sm/6 font-medium text-white">Name</Label>
-        <Description className="text-sm/6 text-white/50">Use your real name so people will recognize you.</Description>
-        <Input
-        value={email}
-          
-          onChange={(e) => setEmail(e.target.value)}
+          <Label className="text-sm/6 font-medium text-white">Name</Label>
+          <Description className="text-sm/6 text-white/50">
+            A name for convenience, like an account name
+          </Description>
+          <Input
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value)
 
-        disabled={isLoading}
-          className={clsx(
-            'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
-            'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
+              if(validationErrors.name) {
+                setValidationErrors((prev) => ({...prev, name: undefined}))
+              }
+            }}
+            required
+            disabled={isLoading}
+            className={clsx(
+              'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
+              'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
+              validationErrors.name && 'ring-2 ring-red-500'
+            )}
+          />
+          {validationErrors.name && (
+            <p className="text-red-500 text-sm mt-1">
+              {validationErrors.name}
+            </p>
           )}
-        />
-      </Field>
+        </Field>
         <Field>
-        <Label className="text-sm/6 font-medium text-white">Email</Label>
-        <Description className="text-sm/6 text-white/50">Use your real name so people will recognize you.</Description>
-        <Input
-        value={email}
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        disabled={isLoading}
-          className={clsx(
-            'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
-            'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
+          <Label className="text-sm/6 font-medium text-white">Email</Label>
+          <Input
+            value={email}
+            type="email"
+            onChange={(e) => {
+              setEmail(e.target.value)
+
+              if(validationErrors.email) {
+                setValidationErrors(prev => ({...prev, email: undefined}))
+              }
+            }}
+            required
+            disabled={isLoading}
+            className={clsx(
+              'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
+              'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
+              validationErrors.email && 'ring-2 ring-red-500'
+            )}
+          />
+          {validationErrors.email && (
+            <p className="text-red-500 text-sm mt-1">
+              {validationErrors.email}
+            </p>
           )}
-        />
-      </Field>
-
-      <Field>
-        <Label className="text-sm/6 font-medium text-white">Password</Label>
-        <Description className="text-sm/6 text-white/50">Use your real name so people will recognize you.</Description>
-        <Input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        disabled={isLoading}
-          className={clsx(
-            'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
-            'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
+        </Field>
+        <Field>
+          <Label className="text-sm/6 font-medium text-white">Password</Label>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+            
+              if(validationErrors.password){
+                setValidationErrors(prev => ({...prev, password: undefined}))
+              }
+            }}
+            required
+            disabled={isLoading}
+            className={clsx(
+              'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
+              'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
+              validationErrors.password && 'ring-2 ring-red-500'
+            )}
+          />
+          {validationErrors.password && (
+            <p className="text-red-500 text-sm mt-1">
+              {validationErrors.password}
+            </p>
           )}
-        />
-      </Field>
-
-            {error && (
-        <div className="text-red-500 text-sm bg-red-50 p-3 rounded">
-          {error}
-        </div>
-      )}
-
-      <Button 
-        type="submit" 
-        disabled={isLoading}
-        className="
+        </Field>
+        {error && (
+          <div className="text-red-500 text-sm bg-red-50 p-3 rounded">
+            {error}
+          </div>
+        )}
+        <Button 
+          type="submit" 
+          disabled={isLoading}
+          className="
             w-full
             inline-flex
             items-center
@@ -134,9 +169,9 @@ export function RegisterForm () {
             cursor-pointer
             justify-center
           "
-      >
-        {isLoading ? 'Sign Up...' : 'Sign Up'}
-      </Button>
+        >
+          {isLoading ? 'Sign Up...' : 'Sign Up'}
+        </Button>
       </Fieldset>
     </form>
   )
