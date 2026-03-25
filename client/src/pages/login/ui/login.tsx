@@ -1,11 +1,12 @@
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { useEffect } from "react";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels, Transition } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LoginForm, RegisterForm, useIsAuthenticated } from "~/features/auth";
 
 export function LoginPage() {
   const navigate = useNavigate()
   const isAuthenticated = useIsAuthenticated()
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -17,6 +18,10 @@ export function LoginPage() {
   <main className="flex items-center justify-center pt-16 pb-4">
     <div className="flex w-full justify-center px-4 pt-12">
       <div className="w-full max-w-lg">
+        <button onClick={() => setOpen((open) => !open)}>Toggle</button>
+      <Transition show={open}>
+        <div className="transition duration-300 ease-in data-closed:opacity-0">I will fade in and out</div>
+      </Transition>
         <TabGroup>
           <TabList className="flex gap-4">
             <Tab 
@@ -59,9 +64,12 @@ export function LoginPage() {
             </Tab>
           </TabList>
             <TabPanels className="mt-3">
+               <Transition show={open}>
             <TabPanel className="rounded-xl bg-white/5 p-3">
+            
               <LoginForm />
             </TabPanel>
+            </Transition>
             <TabPanel className="rounded-xl bg-white/5 p-3">
               <RegisterForm />
             </TabPanel>
