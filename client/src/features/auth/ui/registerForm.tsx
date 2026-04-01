@@ -54,7 +54,7 @@ export function RegisterForm () {
       onSubmit={(e) => {e.preventDefault(); handleSubmit()}}
       className="space-y-4"
     >
-      <Fieldset className="space-y-6 rounded-xl p-6 sm:p-10">
+      <Fieldset className="space-y-5 rounded-xl p-6 sm:p-10">
         <Legend className="
             text-xl
             font-semibold

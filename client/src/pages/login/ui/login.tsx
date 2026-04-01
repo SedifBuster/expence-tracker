@@ -1,4 +1,4 @@
-import { Tab, TabGroup, TabList, TabPanel, TabPanels, Transition } from "@headlessui/react";
+/*import { Tab, TabGroup, TabList, TabPanel, TabPanels, Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LoginForm, RegisterForm, useIsAuthenticated } from "~/features/auth";
@@ -64,12 +64,9 @@ export function LoginPage() {
             </Tab>
           </TabList>
             <TabPanels className="mt-3">
-               <Transition show={open}>
             <TabPanel className="rounded-xl bg-white/5 p-3">
-            
               <LoginForm />
             </TabPanel>
-            </Transition>
             <TabPanel className="rounded-xl bg-white/5 p-3">
               <RegisterForm />
             </TabPanel>
@@ -78,5 +75,61 @@ export function LoginPage() {
       </div>
     </div>
   </main>
+  );
+}*/
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { LoginForm, RegisterForm, useIsAuthenticated } from "~/features/auth";
+
+export function LoginPage() {
+  const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard')
+    }
+  },[isAuthenticated, navigate])
+
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <TabGroup>
+          <TabList className="mb-6 flex space-x-1 rounded-xl bg-white/5 p-1">
+            <Tab
+              className={({ selected }) =>
+                `w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all duration-300 ${
+                  selected 
+                    ? 'bg-blue-900 text-white' 
+                    : 'hover:bg-white/12 hover:text-white'
+                }`
+              }
+            >
+              Sign In
+            </Tab>
+            <Tab
+              className={({ selected }) =>
+                `w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all duration-300 ${
+                  selected 
+                    ? 'bg-blue-900 text-white' 
+                    : 'hover:bg-white/12 hover:text-white'
+                }`
+              }
+            >
+              Sign Up
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel className="rounded-xl bg-white/5 p-3">
+              <LoginForm />
+            </TabPanel>
+            <TabPanel className="rounded-xl bg-white/5 p-3">
+              <RegisterForm />
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
+      </div>
+    </div>
   );
 }

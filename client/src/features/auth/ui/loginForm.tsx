@@ -73,7 +73,7 @@ export function LoginForm () {
         handleSubmit()
       }}
     >
-      <Fieldset className="space-y-6 sm:p-10">
+      <Fieldset className="space-y-5 sm:p-10">
         <Legend
           className="
             text-xl
