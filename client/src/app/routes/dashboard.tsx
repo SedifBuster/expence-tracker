@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import { DashBoardPage } from "~/pages/dashboard";
-import { Outlet, redirect } from "react-router";
+import { Outlet } from "react-router";
 import { useAuthStore } from "~/features/auth";
 
 export function meta({}: Route.MetaArgs) {
@@ -10,19 +10,18 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+/*export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const { user } = useAuthStore.getState();
 
   if (!user) {
-    // Сохраняем URL, куда пользователь пытался попасть (для редиректа после входа)
     const url = new URL(request.url);
     const redirectTo = url.pathname + url.search;
     throw redirect(`/auth?redirectTo=${encodeURIComponent(redirectTo)}`);
   }
 
   return null; // можно вернуть данные, если нужно
-}
+}*/
 
 export default function DashBoard() {
-  return <><h1>Yo</h1><Outlet /></>;
+  return <><Outlet /></>;
 }

@@ -9,7 +9,7 @@ export default [
     path: "/dashboard",
     file: "routes/dashboard.tsx",
     children: [
-      //route("", "routes/dashboard.tsx"),
+      route("profile", "routes/profile.tsx"),
      // route("profile", "routes/profile.tsx"),
     ],
   },
