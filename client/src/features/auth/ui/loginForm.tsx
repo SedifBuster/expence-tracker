@@ -78,6 +78,7 @@ export function LoginForm () {
             text-xl
             font-semibold
             text-white
+            
           "
         >For convenience only &#129303;</Legend>
         <Field>
