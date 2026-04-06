@@ -9,8 +9,7 @@ import {
 
 import "./app.css";
 import type { Route } from "./+types/root";
-import { Header } from "~/widgets/header";
-import { SupabaseProvider } from "./providers/supabaseProvider";
+import { Header } from "../widgets/header";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -22,12 +21,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <SupabaseProvider >
           <Header />
           {children}
           <ScrollRestoration />
           <Scripts />
-        </SupabaseProvider>
       </body>
     </html>
   );

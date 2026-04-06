@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuthStore } from '~/features/auth';
-import { supabase } from '~/shared/lib/supabase';
+
 import type { Route } from './+types/auth';
+import { supabase } from '../../shared/lib/supabase';
 
 
 export function meta({}: Route.MetaArgs) {
@@ -14,18 +14,18 @@ export function meta({}: Route.MetaArgs) {
 
 export function AuthCallback() {
   const navigate = useNavigate();
-  const setSession = useAuthStore((state) => state.setSession)
+  //const setSession = useAuthStore((state) => state.setSession)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        setSession(session)
+        //setSession(session)
         navigate('/dashboard')
       } else {
         navigate('/auth')
       }
     });
-  }, [navigate, setSession])
+  }, [navigate])
 
   return (
     <div className="min-h-screen flex items-center justify-center">

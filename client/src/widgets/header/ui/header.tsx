@@ -1,15 +1,15 @@
 import { Button } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { useAuthStore, useIsAuthenticated } from "~/features/auth";
+
 
 export function Header ()  {
   const [isScrolled, setIsScrolled] = useState(false);
-  const {
-    signOut
-  } = useAuthStore()
+ // const {
+  //  signOut
+  //} = useAuthStore()
   const navigate = useNavigate()
-  const isAuthenticated = useIsAuthenticated()
+  //const isAuthenticated = useIsAuthenticated()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,7 +21,7 @@ export function Header ()  {
 
   const handleSignOut = async () => {
     try{
-      signOut()
+      //signOut()
       navigate('/')
     } catch (error) {
       console.error('Logout failed:', error)
@@ -42,8 +42,7 @@ export function Header ()  {
           <div className="relative">
             <NavLink to={"/auth"} end>
               {
-                !isAuthenticated
-                ?
+<>
                 <Button
                   className="
                     inline-flex
@@ -67,7 +66,7 @@ export function Header ()  {
                 >
                   Sign in 👤
                 </Button>
-                :
+                
                 <Button onClick={() => handleSignOut()}
                   className="
                     inline-flex
@@ -91,6 +90,7 @@ export function Header ()  {
                 >
                   SignOut
                 </Button>
+                </>
               }
             </NavLink>
           </div>

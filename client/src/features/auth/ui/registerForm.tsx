@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useAuthStore } from "../model/store";
 import { Button, Description, Field, Fieldset, Input, Label, Legend } from "@headlessui/react";
-import { validateEmail, validatePasswordForSignup } from "~/shared/lib/validation";
 import clsx from "clsx";
-import { validateNameForSignup } from "~/shared/lib/validation/validation";
+import { validateEmail, validateNameForSignup, validatePasswordForSignup } from "../../../shared/lib/validation/validation";
 
 export function RegisterForm () {
   const [name, setName] = useState('')
@@ -15,7 +13,7 @@ export function RegisterForm () {
     password?: string
   }>({})
 
-  const { signUp, isLoading, error, clearError } = useAuthStore()
+  //const { signUp, isLoading, error, clearError } = useAuthStore()
 
   const validateForm = () => {
     const errors: typeof validationErrors = {}
@@ -34,7 +32,7 @@ export function RegisterForm () {
   }
 
   const handleSubmit = async () => {
-    clearError();
+    //clearError();
     setValidationErrors({})
 
     if(!validateForm()) {
@@ -43,7 +41,7 @@ export function RegisterForm () {
     }
 
     try {
-      await signUp(email, password, name)
+     // await signUp(email, password, name)
     } catch (error) {
       console.log('Register failed, error in store', error)
     }
@@ -75,7 +73,7 @@ export function RegisterForm () {
               }
             }}
             required
-            disabled={isLoading}
+           // disabled={isLoading}
             className={clsx(
               'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
               'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
@@ -101,7 +99,7 @@ export function RegisterForm () {
               }
             }}
             required
-            disabled={isLoading}
+           // disabled={isLoading}
             className={clsx(
               'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
               'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
@@ -127,7 +125,7 @@ export function RegisterForm () {
               }
             }}
             required
-            disabled={isLoading}
+           // disabled={isLoading}
             className={clsx(
               'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
               'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
@@ -140,14 +138,14 @@ export function RegisterForm () {
             </p>
           )}
         </Field>
-        {error && (
+        {/*error && (
           <div className="text-red-500 text-sm bg-red-50 p-3 rounded">
             {error}
           </div>
-        )}
+        )*/}
         <Button 
           type="submit" 
-          disabled={isLoading}
+          //disabled={isLoading}
           className="
             w-full
             inline-flex
@@ -170,7 +168,7 @@ export function RegisterForm () {
             justify-center
           "
         >
-          {isLoading ? 'Sign Up...' : 'Sign Up'}
+          {/*isLoading ? 'Sign Up...' : 'Sign Up'*/}
         </Button>
       </Fieldset>
     </form>

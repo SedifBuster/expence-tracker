@@ -1,8 +1,6 @@
 import type { Route } from "./+types/home";
-import { DashBoardPage } from "~/pages/dashboard";
-import { Outlet } from "react-router";
-import { useAuthStore } from "~/features/auth";
-import { ProfilePage } from "~/pages/profile";
+import { ProfilePage } from "../../pages/profile";
+
 
 export function meta({}: Route.MetaArgs) {
   return [
