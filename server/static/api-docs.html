@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>API Documentation | Endpoints</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(10, 12, 18, 1) 0%, rgba(2, 4, 8, 1) 100%);
+            color: #eef2ff;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+
+        /* контейнер */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .api-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .api-header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .api-header p {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+            border-bottom: 1px dashed rgba(165, 180, 252, 0.3);
+            display: inline-block;
+            padding-bottom: 0.25rem;
+        }
+
+        .base-url {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(165, 180, 252, 0.4);
+            color: #cbd5e1;
+        }
+
+        /* сетка карточек */
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.8rem;
+        }
+
+        /* карточка */
+        .endpoint-card {
+            background: rgba(18, 25, 45, 0.65);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            transition: all 0.25s ease-in-out;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .endpoint-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(165, 180, 252, 0.8);
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
+            background: rgba(25, 35, 60, 0.8);
+        }
+
+        /* заголовок карточки */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem 0.75rem 1.5rem;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.4);
+        }
+
+        .method-badge {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: #1e293b;
+            color: #e2e8f0;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        /* цвета методов */
+        .method-get .method-badge { background: #0f3b2c; color: #4ade80; border-left: 3px solid #22c55e; }
+        .method-post .method-badge { background: #2e2a3e; color: #facc15; border-left: 3px solid #eab308; }
+        .method-put .method-badge { background: #2a2e42; color: #60a5fa; border-left: 3px solid #3b82f6; }
+        .method-patch .method-badge { background: #2e2a42; color: #c084fc; border-left: 3px solid #a855f7; }
+        .method-delete .method-badge { background: #3f1e2a; color: #f87171; border-left: 3px solid #ef4444; }
+
+        .endpoint-path {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.25rem 0.6rem;
+            border-radius: 1rem;
+            word-break: break-all;
+            color: #f1f5f9;
+        }
+
+        /* тело карточки */
+        .card-body {
+            padding: 1.2rem 1.5rem 1.5rem 1.5rem;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #cbd5e6;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .details {
+            background: rgba(2, 6, 23, 0.6);
+            border-radius: 1.2rem;
+            padding: 0.8rem 1rem;
+            margin: 0.8rem 0;
+            font-size: 0.8rem;
+        }
+
+        .details p {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin: 0.3rem 0;
+        }
+
+        .details strong {
+            font-weight: 600;
+            color: #a5b4fc;
+            min-width: 70px;
+        }
+
+        .code-block {
+            background: #0b1120;
+            border-radius: 1rem;
+            padding: 0.7rem 1rem;
+            margin: 0.8rem 0 0.2rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border-left: 3px solid #4f46e5;
+            color: #cbd5e1;
+        }
+
+        .code-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-top: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #334155, transparent);
+            margin: 0.5rem 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 3.5rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            border-top: 1px solid rgba(71, 85, 105, 0.4);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 1.2rem;
+            }
+            .endpoints-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-header {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="api-header">
+        <h1><i class="fas fa-code-branch"></i> API Reference</h1>
+        <p>RESTful endpoints — документация для разработчиков</p>
+        <div class="base-url">
+            <i class="fas fa-globe"></i> Base URL: <span id="baseUrl">https://api.yourdomain.com/v1</span>
+            <i class="fas fa-copy" style="margin-left: 10px; cursor: pointer;" onclick="copyBaseUrl()" title="Копировать"></i>
+        </div>
+        <div>local AI , bot telegram</div>
+    </div>
+
+    <div class="endpoints-grid">
+        
+        <!-- GET /users -->
+        <div class="endpoint-card method-get">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-search"></i> GET</span>
+                <span class="endpoint-path">/users</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Получить список всех пользователей (пагинация, фильтры)</div>
+                <div class="details">
+                    <p><strong><i class="fas fa-quote-left"></i> Описание:</strong> Возвращает массив объектов пользователей.</p>
+                    <p><strong><i class="fas fa-filter"></i> Query params:</strong> page, limit, sort, role</p>
+                </div>
+                <div class="code-label"><i class="fas fa-code"></i> Пример запроса (cURL)</div>
+                <div class="code-block">curl -X GET "https://api.yourdomain.com/v1/users?page=1&limit=10" \
+  -H "Authorization: Bearer {token}"</div>
+                <div class="code-label"><i class="fas fa-database"></i> Пример ответа (200 OK)</div>
+                <div class="code-block">{
+  "data": [
+    { "id": 1, "name": "Алексей", "email": "alex@example.com", "role": "admin" }
+  ],
+  "total": 42,
+  "page": 1
+}</div>
+            </div>
+        </div>
+
+        <!-- POST /users -->
+        <div class="endpoint-card method-post">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-plus-circle"></i> POST</span>
+                <span class="endpoint-path">/users</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Создание нового пользователя</div>
+                <div class="details">
+                    <p><strong>Тело запроса (JSON):</strong> name, email, password, role (опционально)</p>
+                </div>
+                <div class="code-label">Пример запроса</div>
+                <div class="code-block">curl -X POST "https://api.yourdomain.com/v1/users" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Мария","email":"maria@test.com","password":"secure123"}'</div>
+                <div class="code-label">Ответ 201 Created</div>
+                <div class="code-block">{
+  "id": 124,
+  "name": "Мария",
+  "email": "maria@test.com",
+  "createdAt": "2025-04-07T10:30:00Z"
+}</div>
+            </div>
+        </div>
+
+        <!-- GET /users/:id -->
+        <div class="endpoint-card method-get">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-user"></i> GET</span>
+                <span class="endpoint-path">/users/:id</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Получить конкретного пользователя по ID</div>
+                <div class="details">
+                    <p><strong>Параметр пути:</strong> id (число / строка UUID)</p>
+                </div>
+                <div class="code-label">Пример запроса</div>
+                <div class="code-block">curl -X GET "https://api.yourdomain.com/v1/users/42"</div>
+                <div class="code-label">Ответ 200</div>
+                <div class="code-block">{
+  "id": 42,
+  "name": "Елена",
+  "email": "elena@company.com",
+  "profile": { "avatar": "url", "bio": "team lead" }
+}</div>
+            </div>
+        </div>
+
+        <!-- PUT /users/:id -->
+        <div class="endpoint-card method-put">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-sync-alt"></i> PUT</span>
+                <span class="endpoint-path">/users/:id</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Полное обновление пользователя</div>
+                <div class="details">
+                    <p><strong>Требуется авторизация:</strong> роль admin или владелец</p>
+                </div>
+                <div class="code-label">Пример тела</div>
+                <div class="code-block">{
+  "name": "Елена Обновлённая",
+  "email": "new@example.com",
+  "role": "editor"
+}</div>
+                <div class="code-label">Ответ 200</div>
+                <div class="code-block">{ "success": true, "updated": { ... } }</div>
+            </div>
+        </div>
+
+        <!-- PATCH /users/:id -->
+        <div class="endpoint-card method-patch">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-edit"></i> PATCH</span>
+                <span class="endpoint-path">/users/:id</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Частичное обновление (только переданные поля)</div>
+                <div class="details">
+                    <p><strong>Пример:</strong> обновить только имя или avatar</p>
+                </div>
+                <div class="code-block">curl -X PATCH https://api.yourdomain.com/v1/users/42 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Новое имя"}'</div>
+                <div class="code-label">Ответ 200</div>
+                <div class="code-block">{ "id":42, "name":"Новое имя", "email":"elena@company.com" }</div>
+            </div>
+        </div>
+
+        <!-- DELETE /users/:id -->
+        <div class="endpoint-card method-delete">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-trash-alt"></i> DELETE</span>
+                <span class="endpoint-path">/users/:id</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Удаление пользователя (мягкое / жёсткое)</div>
+                <div class="details">
+                    <p><strong>Права:</strong> только администратор</p>
+                </div>
+                <div class="code-label">Пример запроса</div>
+                <div class="code-block">curl -X DELETE "https://api.yourdomain.com/v1/users/99" \
+  -H "Authorization: Bearer {admin_token}"</div>
+                <div class="code-label">Ответ 204 No Content / 200</div>
+                <div class="code-block">{ "message": "User deleted successfully" }</div>
+            </div>
+        </div>
+
+        <!-- POST /auth/login -->
+        <div class="endpoint-card method-post">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-key"></i> POST</span>
+                <span class="endpoint-path">/auth/login</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Аутентификация и получение JWT токена</div>
+                <div class="details">
+                    <p><strong>Тело:</strong> email, password</p>
+                </div>
+                <div class="code-label">Запрос</div>
+                <div class="code-block">curl -X POST "https://api.yourdomain.com/v1/auth/login" \
+  -d '{"email":"user@example.com","password":"pass123"}'</div>
+                <div class="code-label">Ответ 200</div>
+                <div class="code-block">{
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}</div>
+            </div>
+        </div>
+
+        <!-- GET /posts (доп. пример) -->
+        <div class="endpoint-card method-get">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-newspaper"></i> GET</span>
+                <span class="endpoint-path">/posts</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Получение записей блога (с вложенным автором)</div>
+                <div class="details">
+                    <p><strong>Query:</strong> author_id, tags, published</p>
+                </div>
+                <div class="code-label">Пример ответа</div>
+                <div class="code-block">{
+  "posts": [
+    { "id": 101, "title": "NestJS + React интеграция", "author": { "id": 5, "name": "Alex" } }
+  ]
+}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <i class="fas fa-shield-alt"></i> Все запросы к защищённым маршрутам требуют заголовок <strong>Authorization: Bearer &lt;token&gt;</strong><br>
+        <i class="fas fa-code-branch"></i> Актуальная версия API: v1 | Последнее обновление: апрель 2025
+    </div>
+</div>
+
+<script>
+    function copyBaseUrl() {
+        const baseUrlSpan = document.getElementById('baseUrl');
+        const text = baseUrlSpan.innerText.replace('https://api.yourdomain.com/v1', 'https://api.yourdomain.com/v1'); // просто копируем
+        navigator.clipboard.writeText('https://api.yourdomain.com/v1').then(() => {
+            const original = baseUrlSpan.innerHTML;
+            baseUrlSpan.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+            setTimeout(() => {
+                baseUrlSpan.innerHTML = original;
+            }, 1500);
+        });
+    }
+</script>
+</body>
+</html>
