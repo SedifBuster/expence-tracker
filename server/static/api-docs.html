@@ -219,19 +219,69 @@
 </head>
 <body>
 <div class="container">
-    <div class="api-header">
-        <h1><i class="fas fa-code-branch"></i> API Reference</h1>
-        <p>RESTful endpoints — документация для разработчиков</p>
-        <div class="base-url">
-            <i class="fas fa-globe"></i> Base URL: <span id="baseUrl">https://api.yourdomain.com/v1</span>
-            <i class="fas fa-copy" style="margin-left: 10px; cursor: pointer;" onclick="copyBaseUrl()" title="Копировать"></i>
-        </div>
-        <div>local AI , bot telegram</div>
+  <div class="api-header">
+    <h1><i class="fas fa-code-branch"></i> API Expence tracker</h1>
+    <p>RESTful endpoints — документация для разработчиков</p>
+    <div class="base-url">
+      <i class="fas fa-globe"></i> Base URL: <span id="baseUrl">https://api.yourdomain.com/v1</span>
+      <i class="fas fa-copy" style="margin-left: 10px; cursor: pointer;" onclick="copyBaseUrl()" title="Копировать"></i>
+    </div>
+    <div>local AI , bot telegram</div>
+  </div>
+
+  <div class="endpoints-grid">
+    <!-- GET /ailocal -->
+    <div class="endpoint-card method-get">
+      <div class="card-header">
+        <span class="method-badge"><i class="fas fa-search"></i> GET</span>
+        <span class="endpoint-path">/ailocal</span>
+      </div>
+      <div class="card-body">
+        <div class="description">Получить список всех пользователей (пагинация, фильтры)</div>
+          <div class="details">
+            <p><strong><i class="fas fa-quote-left"></i> Описание:</strong> Возвращает массив объектов пользователей.</p>
+            <p><strong><i class="fas fa-filter"></i> Query params:</strong> page, limit, sort, role</p>
+          </div>
+          <div class="code-label"><i class="fas fa-code"></i> Пример запроса (cURL)</div>
+          <div class="code-block">curl -X GET "https://api.yourdomain.com/v1/users?page=1&limit=10" \
+  -H "Authorization: Bearer {token}"</div>
+          <div class="code-label"><i class="fas fa-database"></i> Пример ответа (200 OK)</div>
+          <div class="code-block">{
+  "data": [
+    { "id": 1, "name": "Алексей", "email": "alex@example.com", "role": "admin" }
+  ],
+  "total": 42,
+  "page": 1
+}</div>
+      </div>
     </div>
 
-    <div class="endpoints-grid">
-        
-        <!-- GET /users -->
+    <!-- POST /ailocal -->
+    <div class="endpoint-card method-post">
+            <div class="card-header">
+                <span class="method-badge"><i class="fas fa-plus-circle"></i> POST</span>
+                <span class="endpoint-path">/users</span>
+            </div>
+            <div class="card-body">
+                <div class="description">Создание нового пользователя</div>
+                <div class="details">
+                    <p><strong>Тело запроса (JSON):</strong> name, email, password, role (опционально)</p>
+                </div>
+                <div class="code-label">Пример запроса</div>
+                <div class="code-block">curl -X POST "https://api.yourdomain.com/v1/users" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Мария","email":"maria@test.com","password":"secure123"}'</div>
+                <div class="code-label">Ответ 201 Created</div>
+                <div class="code-block">{
+  "id": 124,
+  "name": "Мария",
+  "email": "maria@test.com",
+  "createdAt": "2025-04-07T10:30:00Z"
+}</div>
+            </div>
+        </div>
+
+                <!-- GET /bot -->
         <div class="endpoint-card method-get">
             <div class="card-header">
                 <span class="method-badge"><i class="fas fa-search"></i> GET</span>
@@ -257,7 +307,7 @@
             </div>
         </div>
 
-        <!-- POST /users -->
+        <!-- POST /bot -->
         <div class="endpoint-card method-post">
             <div class="card-header">
                 <span class="method-badge"><i class="fas fa-plus-circle"></i> POST</span>
@@ -281,134 +331,6 @@
 }</div>
             </div>
         </div>
-
-        <!-- GET /users/:id -->
-        <div class="endpoint-card method-get">
-            <div class="card-header">
-                <span class="method-badge"><i class="fas fa-user"></i> GET</span>
-                <span class="endpoint-path">/users/:id</span>
-            </div>
-            <div class="card-body">
-                <div class="description">Получить конкретного пользователя по ID</div>
-                <div class="details">
-                    <p><strong>Параметр пути:</strong> id (число / строка UUID)</p>
-                </div>
-                <div class="code-label">Пример запроса</div>
-                <div class="code-block">curl -X GET "https://api.yourdomain.com/v1/users/42"</div>
-                <div class="code-label">Ответ 200</div>
-                <div class="code-block">{
-  "id": 42,
-  "name": "Елена",
-  "email": "elena@company.com",
-  "profile": { "avatar": "url", "bio": "team lead" }
-}</div>
-            </div>
-        </div>
-
-        <!-- PUT /users/:id -->
-        <div class="endpoint-card method-put">
-            <div class="card-header">
-                <span class="method-badge"><i class="fas fa-sync-alt"></i> PUT</span>
-                <span class="endpoint-path">/users/:id</span>
-            </div>
-            <div class="card-body">
-                <div class="description">Полное обновление пользователя</div>
-                <div class="details">
-                    <p><strong>Требуется авторизация:</strong> роль admin или владелец</p>
-                </div>
-                <div class="code-label">Пример тела</div>
-                <div class="code-block">{
-  "name": "Елена Обновлённая",
-  "email": "new@example.com",
-  "role": "editor"
-}</div>
-                <div class="code-label">Ответ 200</div>
-                <div class="code-block">{ "success": true, "updated": { ... } }</div>
-            </div>
-        </div>
-
-        <!-- PATCH /users/:id -->
-        <div class="endpoint-card method-patch">
-            <div class="card-header">
-                <span class="method-badge"><i class="fas fa-edit"></i> PATCH</span>
-                <span class="endpoint-path">/users/:id</span>
-            </div>
-            <div class="card-body">
-                <div class="description">Частичное обновление (только переданные поля)</div>
-                <div class="details">
-                    <p><strong>Пример:</strong> обновить только имя или avatar</p>
-                </div>
-                <div class="code-block">curl -X PATCH https://api.yourdomain.com/v1/users/42 \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Новое имя"}'</div>
-                <div class="code-label">Ответ 200</div>
-                <div class="code-block">{ "id":42, "name":"Новое имя", "email":"elena@company.com" }</div>
-            </div>
-        </div>
-
-        <!-- DELETE /users/:id -->
-        <div class="endpoint-card method-delete">
-            <div class="card-header">
-                <span class="method-badge"><i class="fas fa-trash-alt"></i> DELETE</span>
-                <span class="endpoint-path">/users/:id</span>
-            </div>
-            <div class="card-body">
-                <div class="description">Удаление пользователя (мягкое / жёсткое)</div>
-                <div class="details">
-                    <p><strong>Права:</strong> только администратор</p>
-                </div>
-                <div class="code-label">Пример запроса</div>
-                <div class="code-block">curl -X DELETE "https://api.yourdomain.com/v1/users/99" \
-  -H "Authorization: Bearer {admin_token}"</div>
-                <div class="code-label">Ответ 204 No Content / 200</div>
-                <div class="code-block">{ "message": "User deleted successfully" }</div>
-            </div>
-        </div>
-
-        <!-- POST /auth/login -->
-        <div class="endpoint-card method-post">
-            <div class="card-header">
-                <span class="method-badge"><i class="fas fa-key"></i> POST</span>
-                <span class="endpoint-path">/auth/login</span>
-            </div>
-            <div class="card-body">
-                <div class="description">Аутентификация и получение JWT токена</div>
-                <div class="details">
-                    <p><strong>Тело:</strong> email, password</p>
-                </div>
-                <div class="code-label">Запрос</div>
-                <div class="code-block">curl -X POST "https://api.yourdomain.com/v1/auth/login" \
-  -d '{"email":"user@example.com","password":"pass123"}'</div>
-                <div class="code-label">Ответ 200</div>
-                <div class="code-block">{
-  "access_token": "eyJhbGciOiJIUzI1NiIs...",
-  "token_type": "Bearer",
-  "expires_in": 3600
-}</div>
-            </div>
-        </div>
-
-        <!-- GET /posts (доп. пример) -->
-        <div class="endpoint-card method-get">
-            <div class="card-header">
-                <span class="method-badge"><i class="fas fa-newspaper"></i> GET</span>
-                <span class="endpoint-path">/posts</span>
-            </div>
-            <div class="card-body">
-                <div class="description">Получение записей блога (с вложенным автором)</div>
-                <div class="details">
-                    <p><strong>Query:</strong> author_id, tags, published</p>
-                </div>
-                <div class="code-label">Пример ответа</div>
-                <div class="code-block">{
-  "posts": [
-    { "id": 101, "title": "NestJS + React интеграция", "author": { "id": 5, "name": "Alex" } }
-  ]
-}</div>
-            </div>
-        </div>
-    </div>
-
     <div class="footer-note">
         <i class="fas fa-shield-alt"></i> Все запросы к защищённым маршрутам требуют заголовок <strong>Authorization: Bearer &lt;token&gt;</strong><br>
         <i class="fas fa-code-branch"></i> Актуальная версия API: v1 | Последнее обновление: апрель 2025
